@@ -94,9 +94,9 @@ module mod_apse
         type(Norm_Diff_Coef_type), save :: NormCoef
         real(R_P), allocatable, save :: Eta(:)
         integer :: iloc, iend
-#IFDEF DEBUG
+#ifdef DEBUG
         type(dis_wavenum_lpse_type) :: wavenum
-#ENDIF
+#endif
 
 
         if(this%iend==-1)then
@@ -123,18 +123,18 @@ module mod_apse
 
           call this%PrintILoc(iloc)
           call this%Dis%Get(iloc, DisNorm)
-#IFDEF DEBUG
+#ifdef DEBUG
           WaveNum= DisNorm%GetWaveNum()
           print*, Wavenum%getAlpha()
           pause
-#ENDIF
+#endif
 
           call this%Dis%Get(iloc+1, DisNormBack )
-#IFDEF DEBUG
+#ifdef DEBUG
           WaveNum= DisNormBack%GetWaveNum()
           print*, Wavenum%getAlpha()
           pause
-#ENDIF
+#endif
           call BFNorm%Set(iloc, this%BaseFlow, this%Diff)
           call NormCoord%SetLameFromGrid(this%grid, iloc)
           call NormCoord%SetCurvature(this%Curvature%GetPoint(iloc))

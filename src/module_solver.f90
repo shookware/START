@@ -175,10 +175,10 @@ module mod_solver
           class(solver_type), intent(inout) :: this
           integer, intent(in) :: bctype(5, 2) !< 边界条件类型
 
-#IFDEF DEBUG
+#ifdef DEBUG
           print*, BCtype
           pause
-#ENDIF
+#endif
           this%bctype=bctype
 
       end subroutine SetBCType

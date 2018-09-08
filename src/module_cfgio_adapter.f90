@@ -43,7 +43,7 @@ module mod_cfgio_adapter
     public :: kindSolver
     public :: omega0, beta0, m_index, n_index, mdim, ndim, amp
     public :: isCrossflow
-    public :: Coef_Nonlinear
+    public :: Coef_Nonlinear !< 非线性系数
     public :: Coef_Non_sub_loc
     private
 

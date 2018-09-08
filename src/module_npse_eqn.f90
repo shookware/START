@@ -166,14 +166,14 @@ module mod_npse_eqn
         this%Eta=Eta
 
         call this%SetBCType(BCtype)
-#IFDEF DEBUG
+#ifdef DEBUG
           print*, size(this%DisNorm, dim=1)
           print*, size(this%DisNorm, dim=2)
 
           print*, this%DisNorm(0, 1)%GetAlpha()
 
           print*, 1; pause
-#ENDIF
+#endif
 
         if(present(isWithAlpha)) then
           this%isWithAlpha=isWithAlpha
@@ -200,11 +200,11 @@ module mod_npse_eqn
           this%nonlinearTermOld=this%nonlinearTerm
           call this%ComputeNonlinearTerm()
 
-#IFDEF DEBUG
+#ifdef DEBUG
 
 
           print*, this%iloc
-#ENDIF
+#endif
           do nCount=-this%ndim, this%ndim
             do mCount=0, this%mdim
 
@@ -214,7 +214,7 @@ module mod_npse_eqn
               &   write(*, *)'m=',mCount,',n=', nCount
 
 
-#IFDEF DEBUG
+#ifdef DEBUG
               ! if(mCount==0 .and. nCount==0) then
               !       print*, '....................................'
               !       print*, 'check DisNorm'
@@ -228,12 +228,12 @@ module mod_npse_eqn
               !       pause
               ! endif
               !print*, this%DisNorm(mCount, nCount)%jn
-#ENDIF
+#endif
               !
               ! print*, mCount, nCount, this%isWithAlpha(mCount, nCount)
 
               ! pause
-#IFDEF DEBUG
+#ifdef DEBUG
 block
 
   use mod_debug
@@ -246,7 +246,7 @@ block
 
 
 endblock
-#ENDIF
+#endif
               if(iloc< Coef_Non_sub_loc) then
                 Coef_Nonlinear=1.0d0
               else
@@ -280,10 +280,10 @@ endblock
           end do
 
 
-#IFDEF DEBUG
+#ifdef DEBUG
           print*, this%isConverge()
           pause
-#ENDIF
+#endif
           call this%SetAlpha(isCrossFlow)
           this%AlfNew=this%GetAlf(this%DisNorm)
 
@@ -291,10 +291,10 @@ endblock
           iteriaNum=iteriaNum+1
 
         enddo
-#IFDEF DEBUG
+#ifdef DEBUG
         print*, this%isConverge()
         pause
-#ENDIF
+#endif
         this%AlfOld=this%AlfNew
         this%IntergalAlf(1, :, :)=this%IntergalAlf(2, :, :)
 
@@ -339,11 +339,11 @@ endblock
       real(R_P) :: PhaseVel
       complex(R_P) :: Omega, Alpha, Beta
 
-#IFDEF DEBUG
+#ifdef DEBUG
       ! pause 140
       ! print*, this%DisNorm(0, 1)%GetAlpha()
       ! pause 141
-#ENDIF
+#endif
       PhaseVel=0.0d0
       outer1: do nCount=-this%ndim, this%ndim
         do mCount=1, this%mdim
@@ -420,9 +420,9 @@ endblock
       real(R_P) :: Amp(0:this%mdim, -this%ndim:this%ndim)
 
       Amp=exp(CPLI*this%IntergalAlf(1, :, :))
-#IFDEF DEBUG
+#ifdef DEBUG
       ! pause  555
-#ENDIF
+#endif
 
       do nCount=-this%ndim, this%ndim
         do mCount=0, this%mdim
@@ -440,9 +440,9 @@ endblock
       enddo
 
       this%isWithAlpha(0, 0)=.False.
-#IFDEF DEBUG
+#ifdef DEBUG
       ! pause  666
-#ENDIF
+#endif
 
       this%isCheckAmp=.True.
 
@@ -453,16 +453,16 @@ endblock
 
       implicit none
       class(npse_eqn_type), intent(inout) :: this
-#IFDEF DEBUG
+#ifdef DEBUG
       print*, 'subroutine compute nonlinear term..'
       print*, this%DisNorm%jn, this%disNormfront%jn
-#ENDIF
+#endif
       call this%nonlinearSolver%SolveNonlinearTerm(this%DisNorm, this%DisNormFront, &
       &             this%BFNorm, this%NormCoord, this%NormCoef, &
       &             this%IntergalAlf(2, :, :), this%AlfNew)
 
 
-#IFDEF DEBUG
+#ifdef DEBUG
 
       write(*, *) '............'
       write(*, *) 'Check nonlinearTerm'
@@ -488,7 +488,7 @@ endblock
       pause
       endblock
 
-#ENDIF
+#endif
 
     end subroutine ComputeNonlinearTerm
 
@@ -504,14 +504,14 @@ endblock
           this%IntergalAlf(2, :, :)= &
         & this%IntergalAlf(1, :, :)+ &
         & 0.5d0*(this%AlfOld+Alf)*1.0d0/abs(this%coef(2))
-#IFDEF DEBUG
+#ifdef DEBUG
         print*, 'Alf'
         print*, Alf
         print*, 'intergalalf'
 
         !print*, this%IntergalAlf(1,:,:)
         print*, this%IntergalAlf(2,:,:)
-#ENDIF
+#endif
     end subroutine ComputeIntergalAlf
 
     !> 判断是否收敛
@@ -528,14 +528,14 @@ endblock
       iterationNum=iterationNum+1
       maxNonlinearTerm=maxval(abs(this%nonlinearTerm))
       maxNonlinearTermOld=maxval(abs(this%nonlinearTermOld))
-#IFDEF DEBUG
+#ifdef DEBUG
       print*, this%nonlinearTerm(1, 1, 1, 1)
 
       print*, 'maxNonlinearTermValue=', maxNonlinearTerm
       print*, 'maxNonlinearTermValueOld=', maxNonlinearTermOld
       print*, abs(maxNonlinearTerm-maxNonlinearTermOld)/maxNonlinearTerm
       pause
-#ENDIF
+#endif
 
       if(abs(maxNonlinearTerm-maxNonlinearTermOld)/maxNonlinearTerm<=EPS_REL &
       &   .or. maxNonlinearTerm<=EPS*1E-4) then
@@ -598,10 +598,10 @@ endblock
         if(.not. allocated(this%AlfNew)) &
         &   allocate(this%AlfNew(0:this%mdim, -this%ndim:this%ndim))
         this%AlfNew=0.0d0
-#IFDEF DEBUG
+#ifdef DEBUG
         print*, this%nonlinearSolver%isCreate()
         pause
-#ENDIF
+#endif
         if(.not. this%nonlinearSolver%isCreate()) &
         & call this%nonlinearSolver%Create(this%jn, this%mdim, this%ndim, this%nonlinearTerm)
 

@@ -460,10 +460,10 @@ module mod_nonlinear
       this%mdim=m_dim
       this%ndim=n_dim
 
-#IFDEF DEBUG
+#ifdef DEBUG
         print*, 'nonlinear term parameters:'
         print*, jn, m_dim, n_dim
-#ENDIF
+#endif
       !if(allocated(this%nonlinearTerm)) deallocate(this%nonlinearTerm)
       !if(.not. allocated(this%nonlinearTerm)) &
       !& allocate(this%nonlinearTerm(5, jn, 0:m_dim, -n_dim:n_dim))
@@ -488,13 +488,13 @@ module mod_nonlinear
 
       if(.not. this%SPT%isCreate) call this%SPT%Create(omega0, beta0, m_dim, n_dim)
       call this%dis_spt%Create(m_dim, n_dim, jn)
-#IFDEF DEBUG
+#ifdef DEBUG
       ! print*, size(this%dis_spt%rho)
       ! print*, size(this%dis_spt%rho, dim=1)
       ! print*, size(this%dis_spt%rho, dim=2)
       ! print*, size(this%dis_spt%rho, dim=3)
       ! pause
-#ENDIF
+#endif
 
       call this%dis_phy%Create(m_dim, n_dim)
       allocate(this%IntergalAlf(0:this%mdim, -this%ndim:this%ndim))
@@ -551,7 +551,7 @@ module mod_nonlinear
       complex(R_P) :: AlfFront(0:this%mdim, -this%ndim:this%ndim)
       complex(R_P) :: dAlfdx(0:this%mdim, -this%ndim:this%ndim)
 
-#IFDEF DEBUG
+#ifdef DEBUG
       print*, 'subroutine check'
       block
 
@@ -560,7 +560,7 @@ module mod_nonlinear
       endblock
 
       pause
-#ENDIF
+#endif
 
       if(.not. allocated(disflux)) then
         allocate(DisFlux(5, this%jn, 0:this%mdim, -this%ndim:this%ndim))
@@ -570,15 +570,15 @@ module mod_nonlinear
         DisFluxFront=0.0d0
       endif
 
-#IFDEF DEBUG
+#ifdef DEBUG
 
 	! print*, coef
-#ENDIF
+#endif
 
 
       coef=this%NormCoef%Coef_di
 
-#IFDEF DEBUG
+#ifdef DEBUG
       ! pause
       ! print*, 'nonlinear start'
       ! pause
@@ -587,17 +587,17 @@ module mod_nonlinear
       ! !print*, size(this%dis_spt%rho, dim=2)
       ! !print*, size(this%dis_spt%rho, dim=3)
       ! pause
-#ENDIF
+#endif
 
       associate(dis_spt=>this%dis_spt)
 
       do nCount=-this%ndim, this%ndim
         do mCount=0, this%mdim
-#IFDEF DEBUG
+#ifdef DEBUG
      !       print*, '1'
      !       print*, this%DisNorm(mCount, nCount)%jn
 	   ! pause 'this is done'
-#ENDIF
+#endif
           call this%DisNorm(mCount, nCount)%Get(DisFlux(:, :, mCount, nCount))
           call this%DisNormFront(mCount, nCount)%Get(DisFluxFront(:, :, mCount, nCount))
 
@@ -609,7 +609,7 @@ module mod_nonlinear
 
 
 
-#IFDEF DEBUG
+#ifdef DEBUG
            ! print*, '2'
            ! print*, size(dis_spt%rho)
            ! print*, size(dis_spt%rho, dim=1)
@@ -621,7 +621,7 @@ module mod_nonlinear
            ! print*, size(this%dis_spt%rho, dim=3)
            ! print*, dis_spt%rho(mCount, nCount, :)
            ! pause
-#ENDIF
+#endif
 
            DisFlux(:, :, mCount, nCount)=Coef(1)*DisFluxFront(:, :, mCount, nCount) &
                         &              + Coef(2)*DisFlux(:, :, mCount, nCount)
@@ -732,14 +732,14 @@ module mod_nonlinear
       enddo
 
       Amp=exp(CPLI*this%IntergalAlf)
-#IFDEF DEBUG
+#ifdef DEBUG
       print*, 'this%intergalAlf'
       do mCount=0, this%mdim
         do nCount=-this%ndim, this%ndim
             print*, this%IntergalAlf(mCount, nCount)
         enddo
       enddo
-#ENDIF
+#endif
       do j=1, this%jn
         dis_spt%rho(:, :, j)=dis_spt%rho(:, :, j)*Amp
         dis_spt%u  (:, :, j)=dis_spt%u  (:, :, j)*Amp
@@ -795,7 +795,7 @@ module mod_nonlinear
         dis_spt%wyz (:, :, j)= dis_spt%wyz (:, :, j)*Amp
 
       enddo
-#IFDEF DEBUG
+#ifdef DEBUG
       print*, 'dis_spt_u'
       do mCount=0, this%mdim
         do nCount=-this%ndim, this%ndim
@@ -804,7 +804,7 @@ module mod_nonlinear
       ENDDO
 
       pause
-#ENDIF
+#endif
 
        ! block
     ! print*, 'r', maxval(abs(dis_spt%rho(1, 0, :))), maxloc(abs(dis_spt%rho(1, 0, :)))
@@ -956,7 +956,7 @@ module mod_nonlinear
         enddo
       enddo
       !endblock
-#IFDEF DEBUG
+#ifdef DEBUG
       write(*, *) '............'
       write(*, *) 'Check nonlinearTerm2'
       write(*, *)this%nonlinearTerm(1, 200, 0, 0), abs(this%nonlinearTerm(1, 200, 0, 0))
@@ -965,7 +965,7 @@ module mod_nonlinear
       write(*, *)this%nonlinearTerm(4, 200, 0, 0), abs(this%nonlinearTerm(4, 200, 0, 0))
       write(*, *)this%nonlinearTerm(5, 200, 0, 0), abs(this%nonlinearTerm(5, 200, 0, 0))
       ! pause
-#ENDIF
+#endif
     end subroutine solve
 
     !>非线性项F计算

@@ -95,25 +95,25 @@ module mod_npse
         write(*, *)'The dimension in time and spanwise direction is:'
         write(*, *)'0:', this%m_dim, ',   -',this%n_dim,':', this%n_dim
 
-#IFDEF DEBUG
+#ifdef DEBUG
         print*, this%m_dim, this%n_dim, 1
-#ENDIF
+#endif
         if(allocated(this%DisNorm)) deallocate(this%DisNorm)
         if(allocated(this%DisNormFront)) deallocate(this%DisNormFront)
         if(allocated(this%isWithAlpha)) deallocate(this%isWithAlpha)
         if(.not. allocated(this%DisNorm)) &
         & ALLOCATE(this%DisNorm(0:this%m_dim, -this%n_dim:this%n_dim))
-#IFDEF DEBUG
+#ifdef DEBUG
         print*, this%m_dim, this%n_dim, 2
-#ENDIF
+#endif
         if(.not. allocated(this%DisNormFront)) &
         & ALLOCATE(this%DisNormFront(0:this%m_dim, -this%n_dim:this%n_dim))
         if(.not. allocated(this%isWithAlpha)) &
         & allocate(this%isWithalpha(0:this%m_dim, -this%n_dim:this%n_dim))
         this%isWithAlpha=.False.
-#IFDEF DEBUG
+#ifdef DEBUG
         print*, this%m_dim, this%n_dim, 3
-#ENDIF
+#endif
         do n=-this%n_dim, this%n_dim
           do m=0, this%m_dim
             call this%disNorm(m, n)%create(this%grid%GetJnSize())
@@ -228,6 +228,7 @@ module mod_npse
 
     function GenFileName(fn, m, n, iloc) result(fn_out)
 
+      use stringifor
       implicit none
       type(string), intent(in) :: fn
       integer, intent(in), optional :: m
@@ -254,6 +255,7 @@ module mod_npse
     !> 将对应的结果写入到Dis变量
     subroutine CopyToDis(this, m, n, fn)
 
+      use stringifor
       implicit none
       class(npse_type), intent(inout) :: this
       integer, intent(in) :: m, n
@@ -372,6 +374,7 @@ module mod_npse
         use mod_local_normal_coordinate
         use mod_difference
         use mod_cfgio_adapter, only: omega0, beta0
+        use stringifor
 
         implicit none
         class(npse_type), intent(inout) :: this
@@ -433,17 +436,17 @@ module mod_npse
           call NormCoord%SetCurvature(this%Curvature%GetPoint(iloc))
           call this%Diff%GetLocalNormDiffCoef(iloc, NormCoef)
           call this%grid%Get_iy(iloc, Eta)
-#IFDEF DEBUG
+#ifdef DEBUG
 print*, 'lst solver start'
-#ENDIF
+#endif
           call LST%SolveLST(DisNorm, iloc, &
           &   BFNorm, NormCoord, Eta, NormCoef)
           wavenum_pse=DisNorm%GetWaveNum()
           DisNorm=amp(i) .mx. DisNorm
           call DisNorm%SetWavenum(wavenum_pse)
-#IFDEF DEBUG
+#ifdef DEBUG
 print*, 'lst solver end'
-#ENDIF
+#endif
 
           this%DisNorm(m_index(i), n_index(i))=DisNorm
           this%DisNormFront(m_index(i), n_index(i))=DisNorm
@@ -462,6 +465,7 @@ print*, 'lst solver end'
     end subroutine SetDisInlet_IR_NPSE_multi
 
     subroutine Write(this, iloc)
+      use stringifor
       implicit none
       class(npse_type) :: this
       integer, intent(in) :: iloc

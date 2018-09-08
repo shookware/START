@@ -75,9 +75,9 @@
           integer :: icount
 
           do icount=1, 5
-#IFDEF    DEBUG
+#ifdef    DEBUG
 !            print*, 'iCount=', icount
-#ENDIF
+#endif
             call this%bc(icount)%Set(bctype(icount), BFOP, wavenum, Coord)
           end do
 

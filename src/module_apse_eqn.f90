@@ -553,7 +553,8 @@ module mod_apse_eqn
           call DisOP%Get(D, 'D')
           call DisOP%get(DxA, 'X')
           tmpIJ(-2, :, :)=-transpose(B(:, :, j-1))*Coef_dy(3)-transpose(Vyy(:, :, j-1))*Coef_dyy(3)
-          tmpIJ(-1, :, :)=-transpose(B(:, :, j  ))*Coef_dy(4)-transpose(Vyy(:, :, j  ))*Coef_dyy(4)+transpose(A)*Coef_dx1+transpose(D)-transpose(DxA)
+          tmpIJ(-1, :, :)=-transpose(B(:, :, j  ))*Coef_dy(4)-transpose(Vyy(:, :, j  ))*Coef_dyy(4)+ &
+                           transpose(A)*Coef_dx1+transpose(D)-transpose(DxA)
           tmpIJ( 0, :, :)=-transpose(B(:, :, j+1))*Coef_dy(5)-transpose(Vyy(:, :, j+1))*Coef_dyy(5)
           do l=-2, 0
             call MatAcoo%set(5, j, jn+l, tmpIJ(l, :, :))
@@ -570,7 +571,8 @@ module mod_apse_eqn
           call DisOP%get(DxA, 'X')
           tmpIJ(-2, :, :)=-transpose(B(:, :, j-2))*Coef_dy(3)-transpose(Vyy(:, :, j-2))*Coef_dyy(3)
           tmpIJ(-1, :, :)=-transpose(B(:, :, j-1))*Coef_dy(4)-transpose(Vyy(:, :, j-1))*Coef_dyy(4)
-          tmpIJ( 0, :, :)=-transpose(B(:, :, j  ))*Coef_dy(5)-transpose(Vyy(:, :, j  ))*Coef_dyy(5)+transpose(A)*Coef_dx1+transpose(D)-transpose(DxA)
+          tmpIJ( 0, :, :)=-transpose(B(:, :, j  ))*Coef_dy(5)-transpose(Vyy(:, :, j  ))*Coef_dyy(5)+ &
+                           transpose(A)*Coef_dx1+transpose(D)-transpose(DxA)
           do l=-2, 0
             call MatAcoo%set(5, j, jn+l, tmpIJ(l, :, :))
           enddo

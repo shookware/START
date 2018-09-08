@@ -162,7 +162,7 @@ module mod_difference
 
     function dy_dis_flux(this, disflux)
       class(Norm_Diff_Coef_type), intent(in) :: this
-      type(dis_flux_ij_type), value, intent(in) :: disflux(:)
+      type(dis_flux_ij_type), intent(in) :: disflux(:)
       type(dis_flux_ij_type), allocatable :: dy_dis_flux(:)
       integer :: dimsize
 
@@ -170,9 +170,9 @@ module mod_difference
 
       dimsize=size(this%Coef_dj, dim=1)
 
-#IFDEF DEBUG
+#ifdef DEBUG
       ! print*, size(disflux), this%jn
-#ENDIF
+#endif
 
       if(size(disflux)/=this%jn) stop 'dy disflux j num is wrong!'
       allocate(dy_dis_flux(this%jn))
@@ -198,7 +198,7 @@ module mod_difference
 
     function dy_complex(this, f) result(dy_f)
       class(Norm_Diff_Coef_type), intent(in) :: this
-      complex(R_P), intent(in), value :: f(:)
+      complex(R_P), intent(in) :: f(:)
       complex(R_P), allocatable :: dy_f(:)
       integer :: dimsize
 
@@ -206,12 +206,12 @@ module mod_difference
 
       dimsize=size(this%Coef_dj, dim=1)
 
-#IFDEF DEBUG
+#ifdef DEBUG
       ! print*, f
       ! print*, size(f), this%jn
       ! print*, dimsize/2
 
-#ENDIF
+#endif
       if(size(f)/=this%jn) stop 'dy complex f j num is wrong!'
       allocate(dy_f(this%jn))
 
@@ -236,7 +236,7 @@ module mod_difference
 
     function dyy_dis_flux(this, disflux)
       class(Norm_Diff_Coef_type), intent(in) :: this
-      type(dis_flux_ij_type), value, intent(in) :: disflux(:)
+      type(dis_flux_ij_type), intent(in) :: disflux(:)
       type(dis_flux_ij_type), allocatable :: dyy_dis_flux(:)
       integer :: dimsize
 
@@ -269,7 +269,7 @@ module mod_difference
 
     function dyy_complex(this, f) result(dyy_f)
       class(Norm_Diff_Coef_type), intent(in) :: this
-      complex(R_P), value, intent(in) :: f(:)
+      complex(R_P), intent(in) :: f(:)
       complex(R_P), allocatable :: dyy_f(:)
       integer :: dimsize
 

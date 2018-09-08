@@ -198,7 +198,7 @@ module mod_dis_wavenum
 
     !> 获得流向波数\f$\alpha\f$
     !! @return 流向波数\f$\alpha\f$
-    complex(R_P) function get_alpha(this)
+    pure complex(R_P) function get_alpha(this)
 
         implicit none
         class(dis_wavenum_type), intent(in) :: this

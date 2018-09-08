@@ -370,9 +370,9 @@ module mod_dis_shape
         complex(R_P), intent(inout) :: flux(this%jn*5)
         integer :: j
 
-#IFDEF DEBUG
+#ifdef DEBUG
         ! print*, 'getflux_array', this%jn
-#ENDIF
+#endif
 
         do j=0, this%jn-1
             call this%flux(j+1)%get(flux(j*5+1), flux(j*5+2), flux(j*5+3), flux(j*5+4), flux(j*5+5))
@@ -389,10 +389,10 @@ module mod_dis_shape
         complex(R_P), intent(inout) :: flux(5, this%jn)
         integer :: j
 
-#IFDEF DEBUG
+#ifdef DEBUG
         ! print*, 'getflux_array5'
         ! print*, this%jn
-#ENDIF
+#endif
         do j=1, this%jn
             call this%flux(j)%get(flux(1, j), flux(2, j), flux(3, j), flux(4, j), flux(5, j))
         enddo

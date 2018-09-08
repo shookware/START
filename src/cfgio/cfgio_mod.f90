@@ -65,7 +65,8 @@ module cfgio_mod
 
             generic,public:: get => get_sarr,get_barr,get_iarr,get_farr,get_darr,get_carr,get_zarr, &
                                     cfg_get_s,cfg_get_b,cfg_get_i,cfg_get_f,cfg_get_d,cfg_get_c,cfg_get_z, &
-                                    cfg_get_s_opt,cfg_get_b_opt,cfg_get_i_opt,cfg_get_f_opt,cfg_get_d_opt,cfg_get_c_opt,cfg_get_z_opt
+                                    cfg_get_s_opt,cfg_get_b_opt,cfg_get_i_opt,cfg_get_f_opt,cfg_get_d_opt, &
+				    cfg_get_c_opt,cfg_get_z_opt
             generic,public:: set => set_sarr,set_barr,set_iarr,set_farr,set_darr,set_carr,set_zarr, &
                                     cfg_sets,cfg_setb,cfg_seti,cfg_setf,cfg_setd,cfg_setc,cfg_setz
 

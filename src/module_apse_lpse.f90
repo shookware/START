@@ -114,10 +114,10 @@ contains
       call this%apse%SetSolver(method=1001)
       call this%apse%Create(this%Grid%GetJnSize())
 
-#IFDEF DEBUG
+#ifdef DEBUG
       print*, this%iloc
       pause
-#ENDIF
+#endif
       do iloc=This%Iloc-1, this%IStart, -1
         call this%PrintILoc(iloc)
         call this%Dis_APSE%Get(iloc, DisNorm)

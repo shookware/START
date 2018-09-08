@@ -232,11 +232,11 @@ module mod_lpse_eqn
         this%NormCoord=>NormCoord
         this%NormCoef=>NormCoef
         this%DisNorm=>DisNorm
-#IFDEF DEBUG
+#ifdef DEBUG
         print*, 'subroutine solve lpse'
         print*, this%DisNormFront%jn, this%DisNorm%jn
         pause
-#ENDIF
+#endif
         this%Coef=NormCoef%Coef_di
 
         if(.not. allocated(this%Eta)) then
@@ -520,20 +520,20 @@ module mod_lpse_eqn
         implicit none
         class(lpse_eqn_type), intent(inout) :: this
         type(dis_wavenum_lpse_type), intent(in) :: WaveNum !< 扰动色散特征
-#IFDEF DEBUG
+#ifdef DEBUG
         ! print*, 'set_lpsebc'
         ! print*, this%bctype(:,1)
-#ENDIF
+#endif
         call this%LpseBC(1)%set(this%bctype(:, 1), this%BFOPNorm%GetPoint(1), wavenum, this%NormCoord%GetPoint(1))
-#IFDEF DEBUG
+#ifdef DEBUG
         ! print*, 'set_lpsebc_wall'
-#ENDIF
+#endif
         call this%LpseBC(2)%set(this%bctype(:, 2), this%BFOPNorm%GetPoint(this%jn), wavenum, this%NormCoord%GetPoint(this%jn))
-#IFDEF DEBUG
+#ifdef DEBUG
         ! print*, 'set_lpsebc_farfield'
         ! print*, this%BCtype(:,1)
         ! print*, this%BCtype(:,2)
-#ENDIF
+#endif
         call this%DisOPNorm%Set(this%BFOPNorm, this%NormCoord, wavenum, this%lpsebc)
 
     end subroutine set_dis_op
@@ -587,21 +587,21 @@ module mod_lpse_eqn
           AlphaOld=0.0d0
           Dx_alpha=this%Coef(2)*AlphaNew+this%Coef(1)*AlphaFront
 
-#IFDEF DEBUG
+#ifdef DEBUG
           write(*, *)this%Coef
           write(*, *) "AlphaOld=", (AlphaOld)
           write(*, *) "AlphaNew=", (AlphaNew)
           write(*, *) "AlphaFront=", (AlphaFront)
           print*, this%Coef(2)*AlphaNew+this%Coef(1)*AlphaFront
           pause
-#ENDIF
+#endif
 
           do while ( abs(AlphaNew-AlphaOld)/abs(AlphaNew) >=EPS_REL)
               call WaveNum%SetDxAlpha(Dx_alpha)
-#IFDEF DEBUG
+#ifdef DEBUG
               print*, 'Dx_alpha=', Dx_Alpha
               pause
-#ENDIF
+#endif
               call this%SetDisOP(WaveNum)
               call this%SolveDisNorm(this%DisNorm, this%DisNormFront)
               call this%SolveAlpha(this%DisNorm, this%DisNormFront, DxDisNorm)
@@ -614,9 +614,9 @@ module mod_lpse_eqn
                 write(*, *) "AlphaOld=", (AlphaOld)
                 write(*, *) "AlphaNew=", (AlphaNew)
 !              endif
-#IFDEF DEBUG
+#ifdef DEBUG
               write(*, *) "AlphaFront=", (AlphaFront)
-#ENDIF
+#endif
 !              if(.not. this%NonlinearSolver) then
                 write(*, *) "AlphaErr=", abs(AlphaNew-AlphaOld)
 !              endif
@@ -664,11 +664,11 @@ module mod_lpse_eqn
         !!用iloc-1位置当DisNorm初值
         !DisNorm=DisNormFront
 
-#IFDEF DEBUG
+#ifdef DEBUG
         print*, this%DisNorm%jn, this%disNormFront%jn
         print*, DisNorm%jn, DisNormFront%jn
         pause 'solvewithalpha subroutine'
-#ENDIF
+#endif
 
         call this%DisNorm%SetILoc(this%iloc)!; call DisNorm%SetDiffIloc(this%iloc)
 
@@ -746,11 +746,11 @@ module mod_lpse_eqn
         real(R_P) :: Rho0, U0, V0, W0, T0
         type(dis_flux_ij_type) :: FluxPoint
         type(BF_flux_org_ij_type) :: BFPoint
-#IFDEF DEBUG
+#ifdef DEBUG
         print*, "subroutine computesigma"
         print*, DisNorm%jn, DxDisNorm%jn
         pause
-#ENDIF
+#endif
         wavenum=DisNorm%GetWaveNum()
         Alpha=wavenum%GetAlpha()
         j_m=1; j_r=1; j_u=1; j_v=1; j_T=1; j_w=1
@@ -817,11 +817,11 @@ module mod_lpse_eqn
         type(BF_flux_org_ij_type) :: BFFluxPoint, dx_BFFluxPoint, tmp
         complex(R_P) :: energy, energy_dx
         integer, parameter :: method=4
-#IFDEF DEBUG
+#ifdef DEBUG
         print*, 'function dsigma'
         print*, disNorm%jn, DxDisNorm%jn, jloc
         pause
-#ENDIF
+#endif
 
         call DisNorm%Get(jloc, FluxPoint)
         call FluxPoint%get(rho, u, v, w, T)

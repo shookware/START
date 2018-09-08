@@ -95,9 +95,9 @@ module mod_lpse
         type(Norm_Diff_Coef_type), save :: NormCoef
         real(R_P), allocatable, save :: Eta(:)
         integer :: iloc, iend
-#IFDEF DEBUG
+#ifdef DEBUG
         type(dis_wavenum_lpse_type) :: wavenum
-#ENDIF
+#endif
 
         if(this%iend==-1)then
           iend=this%Grid%GetInSize()
@@ -124,18 +124,18 @@ module mod_lpse
           call this%PrintILoc(iloc)
 
           call this%Dis%Get(iloc, DisNorm)
-#IFDEF DEBUG
+#ifdef DEBUG
           WaveNum= DisNorm%GetWaveNum()
           print*, Wavenum%getAlpha()
           pause
-#ENDIF
+#endif
 
           call this%Dis%Get(iloc-1, DisNormFront )
-#IFDEF DEBUG
+#ifdef DEBUG
           WaveNum= DisNormFront%GetWaveNum()
           print*, Wavenum%getAlpha()
           pause
-#ENDIF
+#endif
           call BFNorm%Set(iloc, this%BaseFlow, this%Diff)
           call NormCoord%SetLameFromGrid(this%grid, iloc)
           call NormCoord%SetCurvature(this%Curvature%GetPoint(iloc))
@@ -277,11 +277,11 @@ module mod_lpse
 !
 !         call this%Dis%set(this%iloc, DisNorm)
 !         call this%Dis%Print(this%iloc, this%Grid)
-! #IFDEF DEBUG
+! #ifdef DEBUG
 !         print*, Wavenum%getAlpha()
 !         print*, this%iloc
 !         pause 'SetInletDis_IR'
-! #ENDIF
+! #endif
 !         !call this%pse_typeStart()
 !
 !     end subroutine SetDisInlet_IR_PSE

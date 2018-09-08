@@ -6,7 +6,8 @@ STArT                         {#mainpage}
 ## System Requirements:
 
 tested on MAC OSX.
-intel fortran 15.0+
+Intel MKL(Math kernal Library)
+Intel Fortran Compiler 15.0+/gfortran 7.0+
 
 ## Compiling
 
