@@ -348,6 +348,7 @@ module mod_lpse
         call LST%SolveLST(DisNorm, iloc, &
         &   BFNorm, NormCoord, Eta, NormCoef)
         Sigma=DisNorm%GetAlpha()
+        print*, 'Alpha=', Sigma(1)
         call DisNorm%SetSigma(Sigma)
 
         call this%Dis%Set(iloc, DisNorm)

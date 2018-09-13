@@ -3,14 +3,14 @@
 #
 
 EXE = START
-FC = ifort #ifort
+FC = gfortran #ifort
 IDIR =
 
-CFLAGS = -O2 -g -module $(OBJS_DIR) $(IDIR) -CB -ftrapuv -init=snan -traceback  -cpp
+#CFLAGS = -O2 -g -module $(OBJS_DIR) $(IDIR) -CB -ftrapuv -init=snan -traceback  -cpp
 #CFLAGS = -O0 -g -module $(OBJS_DIR) $(IDIR) -CB -traceback -cpp -D DEBUG
-#CFLAGS = -O2 -g  $(IDIR) -J$(OBJS_DIR) -cpp -I/opt/intel/compilers_and_libraries_2017/mac/mkl/include/
-LFLAGS = -mkl 
-#LFLAGS = -L/opt/intel/compilers_and_libraries_2017/mac/mkl/lib/ -lmkl_rt
+CFLAGS = -O2 -g  $(IDIR) -J$(OBJS_DIR) -cpp -I/opt/intel/compilers_and_libraries_2017/mac/mkl/include/
+#LFLAGS = -mkl 
+LFLAGS = -L/opt/intel/compilers_and_libraries_2017/mac/mkl/lib/ -lmkl_rt
 LIBS =
 
 OBJS_DIR = obj/
