@@ -375,6 +375,7 @@ module mod_lpse_eqn
         call this%BFOPNorm%Create(this%jn, eqkind)
         call this%DisOPNorm%Create(this%jn)
         allocate(this%nonlinearTerm(5, this%jn))
+        this%nonlinearTerm=0.0d0
         this%NonlinearSolver=.False.
 
     end subroutine create
@@ -1600,9 +1601,10 @@ module mod_lpse_eqn
         iloc = this%iloc
         jn = this%jn
         !if(.not. (associated(DisDiff, this%Diff))) DisDiff => this%Diff
-        if(.not. (associated(DisOPNorm, this%DisOPNorm))) &
-        &   DisOPNorm => this%DisOPNorm
-        if(.not. (associated(Coef_dx, this%Coef))) Coef_dx => this%Coef
+        if(associated(DisOPNorm)) DisOPNorm=>null()
+        DisOPNorm => this%DisOPNorm
+        if(associated(Coef_dx)) Coef_dx=>null()
+        Coef_dx => this%Coef
         Coef_dx1=Coef_dx(size(Coef_dx))
 
 !        do j=1, 1
@@ -1686,6 +1688,9 @@ module mod_lpse_eqn
           do l=-2, 0
             call MatAcoo%set(5, j, jn+l, tmpIJ(l, :, :))
           enddo
+	  
+	  DisOPNorm=>null()
+	  Coef_dx=>null()
 
     end subroutine set_matA_lpse
 
@@ -1712,9 +1717,10 @@ module mod_lpse_eqn
         iloc = this%iloc
         jn = this%jn
         !if(.not. (associated(DisDiff, this%Diff))) DisDiff => this%Diff
-        if(.not. (associated(DisOPNorm, this%DisOPNorm))) &
-        &   DisOPNorm => this%DisOPNorm
-        if(.not. (associated(Coef_dx, this%Coef))) Coef_dx => this%Coef
+        if(associated(DisOPNorm)) DisOPNorm=>null()
+        DisOPNorm => this%DisOPNorm
+        if(associated(Coef_dx)) Coef_dx=>null()
+        Coef_dx => this%Coef
         Coef_dx1=Coef_dx(size(Coef_dx))
 
 !        do j=1, 1
@@ -1881,6 +1887,9 @@ module mod_lpse_eqn
             !call MatAcoo%set(5, j, jn+l, tmpIJ(l, :, :))
             call MatAbsr%Set(tmpIJ(l, :, :), j, jn+l)
           enddo
+
+          DisOPNorm=>null()
+          Coef_dx=>null()
 
         !   if(mm==0 .and. nn==0)then
         !     ! print*, Coef_dy(1:5)

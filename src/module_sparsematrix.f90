@@ -620,8 +620,8 @@ module mod_sparse_matrix
        type(mat_csr_type), intent(in) :: obj1
        type(mat_csr_type) :: outvalue
        integer :: ierr, nnz
-       complex(R_P), allocatable :: tmp(:)
-       integer , allocatable :: tmpI(:)
+       complex(R_P) :: tmp(1)
+       integer :: tmpI(1)
        integer :: ia(this%nrow+1)
 
        call  mkl_zcsradd ('n', 1, 3, this%nrow, this%nrow, this%AN, this%JA, &

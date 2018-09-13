@@ -453,7 +453,7 @@ module mod_apse_eqn
         implicit none
         class(apse_eqn_type), target, intent(in) :: this
         type(mat_coo_type), intent(inout) :: MatAcoo !< 方程组系数矩阵
-        integer, pointer :: iloc, jn
+        integer :: iloc, jn
         type(difference_2D_type), pointer :: DisDiff
         type(lpse_dis_op_normal_type), pointer :: DisOPNorm
         type(lpse_dis_op_point_type) :: DisOP
@@ -465,12 +465,11 @@ module mod_apse_eqn
         integer :: j, l
         integer, parameter :: XI1 = 1, ETA1 = 2, ETA2 = 3
 
-        if (.not. (associated(iloc, this%iloc))) iloc => this%iloc
-        if (.not. (associated(jn, this%jn))) jn => this%jn
+        iloc = this%iloc
+        jn = this%jn
         !if (.not. (associated(DisDiff, this%Diff))) DisDiff => this%Diff
-        if (.not. (associated(DisOPNorm, this%DisOPNorm))) &
-        &   DisOPNorm => this%DisOPNorm
-        if (.not. (associated(Coef_dx, this%Coef)))Coef_dx => this%Coef
+        DisOPNorm => this%DisOPNorm
+        Coef_dx => this%Coef
         Coef_dx1=-Coef_dx(1)
 
         do j=1, jn
@@ -554,7 +553,7 @@ module mod_apse_eqn
           call DisOP%get(DxA, 'X')
           tmpIJ(-2, :, :)=-transpose(B(:, :, j-1))*Coef_dy(3)-transpose(Vyy(:, :, j-1))*Coef_dyy(3)
           tmpIJ(-1, :, :)=-transpose(B(:, :, j  ))*Coef_dy(4)-transpose(Vyy(:, :, j  ))*Coef_dyy(4)+ &
-                           transpose(A)*Coef_dx1+transpose(D)-transpose(DxA)
+          &                transpose(A)*Coef_dx1+transpose(D)-transpose(DxA)
           tmpIJ( 0, :, :)=-transpose(B(:, :, j+1))*Coef_dy(5)-transpose(Vyy(:, :, j+1))*Coef_dyy(5)
           do l=-2, 0
             call MatAcoo%set(5, j, jn+l, tmpIJ(l, :, :))
@@ -571,11 +570,14 @@ module mod_apse_eqn
           call DisOP%get(DxA, 'X')
           tmpIJ(-2, :, :)=-transpose(B(:, :, j-2))*Coef_dy(3)-transpose(Vyy(:, :, j-2))*Coef_dyy(3)
           tmpIJ(-1, :, :)=-transpose(B(:, :, j-1))*Coef_dy(4)-transpose(Vyy(:, :, j-1))*Coef_dyy(4)
-          tmpIJ( 0, :, :)=-transpose(B(:, :, j  ))*Coef_dy(5)-transpose(Vyy(:, :, j  ))*Coef_dyy(5)+ &
-                           transpose(A)*Coef_dx1+transpose(D)-transpose(DxA)
+          tmpIJ( 0, :, :)=-transpose(B(:, :, j  ))*Coef_dy(5)-transpose(Vyy(:, :, j  ))*Coef_dyy(5) &
+                    &     +transpose(A)*Coef_dx1+transpose(D)-transpose(DxA)
           do l=-2, 0
             call MatAcoo%set(5, j, jn+l, tmpIJ(l, :, :))
           enddo
+
+          DisOPNorm=>null()
+          Coef_dx=>null()
 
      end subroutine set_matA_lpse
 
@@ -587,7 +589,7 @@ module mod_apse_eqn
         implicit none
         class(apse_eqn_type), target, intent(in) :: this
         type(mat_bsr_type), intent(inout) :: MatAbsr !< 方程组系数矩阵
-        integer, pointer :: iloc, jn
+        integer :: iloc, jn
         type(difference_2D_type), pointer :: DisDiff
         type(lpse_dis_op_normal_type), pointer :: DisOPNorm
         type(lpse_dis_op_point_type) :: DisOP
@@ -599,12 +601,11 @@ module mod_apse_eqn
         integer :: j, l
         integer, parameter :: XI1 = 1, ETA1 = 2, ETA2 = 3
 
-        if (.not. (associated(iloc, this%iloc))) iloc => this%iloc
-        if (.not. (associated(jn, this%jn))) jn => this%jn
+        iloc = this%iloc
+        jn = this%jn
         !if (.not. (associated(DisDiff, this%Diff))) DisDiff => this%Diff
-        if (.not. (associated(DisOPNorm, this%DisOPNorm))) &
-        &   DisOPNorm => this%DisOPNorm
-        if (.not. (associated(Coef_dx, this%Coef)))Coef_dx => this%Coef
+        DisOPNorm => this%DisOPNorm
+        Coef_dx => this%Coef
         Coef_dx1=-Coef_dx(1)
 
         do j=1, jn
@@ -726,6 +727,9 @@ module mod_apse_eqn
           do l=-2, 0
             call MatAbsr%set(tmpIJ(l, :, :), j, jn+l)
           enddo
+
+          DisOPNorm=>null()
+          Coef_dx=>null()
 
      end subroutine set_matA_lpse_bsr
 

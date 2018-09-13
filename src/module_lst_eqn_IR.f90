@@ -459,8 +459,10 @@ module mod_lst_eqn_IR
             tmpIJ(1, :, :)=    BL*Coef_dy(2)-Vyy*Coef_dyy(2)
             tmpIJ(2, :, :)=    BL*Coef_dy(3)-Vyy*Coef_dyy(3)
             do l=0, 2
+                print*, tmpIJ(l, :, :)
                 call A%set(5, j, l+1, tmpIJ(l, :, :))
             end do
+            read(*, *)l
 !            do l=1, jn*5
 !                call A%Set(l+jn*5, l+jn*5, (1.0d0, 0.0d0))
 !            end do
