@@ -68,6 +68,7 @@ module mod_lst_dis_OP_normal
         use mod_lns_op_normal
         use mod_dis_wavenum
         use mod_difference
+        use mod_cfgio_adapter, only: bctype
 
         implicit none
         class(lst_dis_op_normal_type), intent(inout) :: this
@@ -78,11 +79,11 @@ module mod_lst_dis_OP_normal
         integer :: J
 
 
-        call this%DisOP(1)%SetBCWall(BFOPNorm%GetPoint(1))
+        call this%DisOP(1)%SetBCWall(BFOPNorm%GetPoint(1), wavenum, bctype(:, 1))
         do J=2, this%jn-1
           call this%DisOP(j)%Set(BFOPNorm%GetPoint(j), wavenum, NormCoord%GetPoint(j))
         enddo
-        call this%DisOP(this%jn)%SetBCFarField(BFOPNorm%GetPoint(this%jn))
+        call this%DisOP(this%jn)%SetBCFarField(BFOPNorm%GetPoint(this%jn), wavenum, bctype(:, 2))
 
     end subroutine set
 

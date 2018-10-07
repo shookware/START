@@ -87,11 +87,13 @@ module mod_lst_dis_OP_point
     end subroutine Set
 
     !> 设置壁面边界系数算子
-    subroutine SetBCWall(this, BFOP)
+    subroutine SetBCWall(this, BFOP, wavenum, bctype)
 
         implicit none
         class(lst_dis_op_point_type), intent(inout) :: this
         type(lst_bf_op_point_type), intent(in) :: BFOP !< LNS方程扰动系数算子
+        type(dis_wavenum_type), intent(in) :: wavenum
+        integer :: bctype(5)
         real(R_P), dimension(5, 5) :: G, A, B, C, D, Vxx, Vxy, Vxz, Vyy, Vyz, Vzz
         complex(R_P), dimension(5, 5) :: matB, matDL, matDR1
         complex(R_P) :: alpha, beta, omega
@@ -102,7 +104,8 @@ module mod_lst_dis_OP_point
                                     &  0.0d0, 0.0d0, 0.0d0, 1.0d0, 0.0d0, &
                                     &  0.0d0, 0.0d0, 0.0d0, 0.0d0, 1.0d0], [5,5])
         call BFOP%Get(G, A, B, C, D, Vxx, Vxy, Vxz, Vyy, Vyz, Vzz)
-        call this%wavenum%Get(alpha, beta, omega)
+
+        call wavenum%Get(alpha, beta, omega)
 
         matB=zero
         matB(1, :)=B(1, :)
@@ -121,11 +124,13 @@ module mod_lst_dis_OP_point
     end subroutine SetBCWall
 
     !> 设置原场边界系数算子
-    subroutine SetBCFarField(this, BFOP)
+    subroutine SetBCFarField(this, BFOP, wavenum, bctype)
 
         implicit none
         class(lst_dis_op_point_type), intent(inout) :: this
         type(lst_bf_op_point_type), intent(in) :: BFOP !< LNS方程扰动系数算子
+        type(dis_wavenum_type), intent(in) :: wavenum
+        integer, intent(in) :: bctype(:)
         complex(R_P), parameter :: zero(5, 5)=0.0d0
         complex(R_P), parameter :: one(5, 5)=reshape([1.0d0, 0.0d0, 0.0d0, 0.0d0, 0.0d0, &
                                         &  0.0d0, 1.0d0, 0.0d0, 0.0d0, 0.0d0, &
