@@ -75,7 +75,8 @@ module mod_lpse
         class(lpse_type), intent(inout) :: This
         type(dis_type), target, intent(in) :: Dis !< 二维扰动场
 
-        if(.not. (associated(this%Dis, Dis))) this%Dis => Dis
+        if((associated(this%Dis))) this%Dis=>null()
+        this%Dis => Dis
 
     end subroutine SetWholeDis
 

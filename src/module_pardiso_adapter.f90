@@ -38,10 +38,10 @@ module mod_pardiso_adapter
         private
         integer :: ndim !< 方程维数 @rivate
         integer :: nnz  !< 系数矩阵非0元素个数   @private
-        integer, pointer :: ia(:)  !< csr格式系数矩阵行信息@private
-        integer, pointer :: ja(:)  !< csr格式系数矩阵列信息@private
-        complex(R_P), pointer :: ma(:)  !< csr格式系数矩阵非0元素@private
-        complex(R_P), pointer :: rhs(:) !< 线性方程右端项@private
+        integer, pointer :: ia(:)=>null()  !< csr格式系数矩阵行信息@private
+        integer, pointer :: ja(:)=>null()  !< csr格式系数矩阵列信息@private
+        complex(R_P), pointer :: ma(:)=>null()  !< csr格式系数矩阵非0元素@private
+        complex(R_P), pointer :: rhs(:)=>null() !< 线性方程右端项@private
         complex(R_P), allocatable :: X(:)   !< 线性方程组的解@private
         type(pardiso_type) :: solver    !< 解算器@private
 
@@ -198,7 +198,8 @@ module mod_pardiso_adapter
         complex(R_P), intent(in), target :: RHS(:)
         class(pardiso_adapter_type), intent(inout) :: this
 
-        if(.not. (associated(this%rhs, rhs))) this%rhs => rhs
+        if((associated(this%rhs))) this%rhs=>null() 
+        this%rhs => rhs
 
         call this%solver%SetRHS(this%rhs)
 

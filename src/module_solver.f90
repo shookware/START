@@ -34,10 +34,10 @@ module mod_solver
     !> 求解器类
     type, abstract :: solver_type
 
-        type(difference_2D_type), pointer :: Diff !< 整个二维场扰动离散的拉格朗日基函数
-        type(grid2d_type), pointer :: Grid !< 二维场网格
-        type(Baseflow2D_type), pointer :: BaseFlow !< 二维基本流
-        type(curvature_2d_type), pointer :: Curvature !< 二维曲率
+        type(difference_2D_type), pointer :: Diff=>null() !< 整个二维场扰动离散的拉格朗日基函数
+        type(grid2d_type), pointer :: Grid=>null() !< 二维场网格
+        type(Baseflow2D_type), pointer :: BaseFlow=>null() !< 二维基本流
+        type(curvature_2d_type), pointer :: Curvature=>null() !< 二维曲率
         integer :: iloc !< 当地初始流向站位编号
         integer :: Istart !< 计算域结束站位
         integer :: Iend !< 计算域结束站位
@@ -141,7 +141,8 @@ module mod_solver
           class(solver_type), intent(inout) :: this
           type(Baseflow2D_type), target, intent(in) :: BF !< 2D基本流
 
-          if(.not. (associated(this%BaseFlow, BF))) this%BaseFlow => BF
+          if(associated(this%BaseFlow)) this%BaseFlow=>null()
+          this%BaseFlow => BF
 
       end subroutine SetBaseFlow
 
@@ -152,8 +153,8 @@ module mod_solver
           class(solver_type), intent(inout) :: this
           type(curvature_2d_type), target, intent(in) :: Curvature !< 2D区率
 
-          if(.not. (associated(this%Curvature, Curvature))) &
-          &   this%Curvature => Curvature
+          if(associated(this%Curvature)) this%Curvature=>null()
+          this%Curvature => Curvature
 
       end subroutine SetCurvature
 

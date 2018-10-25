@@ -61,7 +61,8 @@ contains
         class(lpse_dis_op_normal_type),intent(inout) :: this
         real(R_P) :: Coef(:)
 
-        if(.not. allocated(this%Coef)) allocate(this%Coef, source=Coef)
+        if(.not. allocated(this%Coef)) allocate(this%Coef(size(Coef)))
+        this%Coef=Coef
 
     end subroutine SetCoef
 

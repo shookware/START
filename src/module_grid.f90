@@ -439,7 +439,7 @@ Contains
 
         i=0; j=0
 
-        if(associated(grid)) grid=>null()
+        grid=>null()
         allocate(grid)
         grid%in=this%in; grid%jn=this%jn
         allocate(grid%points(grid%in, grid%jn))
@@ -532,7 +532,13 @@ Contains
         real(R_P), dimension(this%in, this%jn) :: xx, yy, zz
         integer :: i, j
 
-        call this%points%Get(xx, yy, zz)
+        print*, this%in, this%jn
+        do j=1, this%jn
+          do i=1, this%in
+!            print*, i, j
+            call this%points(i, j)%Get(xx(i,j), yy(i,j), zz(i, j))
+          enddo
+        enddo
         fn=fn_surf//'_Grid.dat'
         open(998, file=fn%chars(), form='unformatted')
         write(998)1

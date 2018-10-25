@@ -1320,7 +1320,7 @@ module mod_nonlinear
       call DxFlux%get(rho0x, u0x, v0x, w0x, T0x)
       call DyFlux%get(rho0y, u0y, v0y, w0y, T0y)
 
-      c0=U0/sqrt(T0)
+      c0=U0/sqrt(T0)*Ma
 
       Vig=min(1.0d0, c0 **2)
       omv=Vig

@@ -101,7 +101,7 @@ module mod_difference
    type, extends(difference_object_type), public :: difference_2D_type
 
       private
-      type(grid2d_type), Pointer, private :: grid !<待差分二维网格
+      type(grid2d_type), Pointer, private :: grid=>null() !<待差分二维网格
 
    Contains
 
@@ -371,7 +371,8 @@ module mod_difference
       if (.not. Grid%HasBodyFixed()) stop "The Grid must be a body-fixed one! Use Trans Wrapper to get one!"
       call grid%GetSize(in, jn)
       this%in = in; this%jn = jn
-      if(.not. (associated(this%grid, grid))) this%grid => grid
+      if((associated(this%grid)))  this%grid=>null()
+      this%grid => grid
       if (eta_order .ne. 4) stop "Normal order must be 4 now!"
       !if (xi_order .ne. 1) stop 'streamwise order must be 1 now!'
       this%XIorder = xi_order

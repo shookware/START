@@ -50,7 +50,7 @@ module mod_generic_bc
         complex(R_P) :: rhs !<右端项的值
         type(local_coordinate_type), private :: Coord !< 局部坐标系
         type(dis_wavenum_lpse_type) :: wavenum !< 波数色散关系
-        type(lpse_BF_OP_point_type), pointer :: BFOP !< 基本流场算子
+        type(lpse_BF_OP_point_type), pointer :: BFOP=>null() !< 基本流场算子
 
         Contains
 
@@ -93,7 +93,8 @@ module mod_generic_bc
         this%bctype=bctype
         this%Coord = Coord
         this%wavenum= wavenum
-        if(.not. (associated(this%BFOP, bfop))) this%BFOP => bfop
+        if((associated(this%BFOP))) this%BFOP=>null()
+        this%BFOP => bfop
 
         call this%set_from_bctype
 

@@ -468,7 +468,9 @@ module mod_apse_eqn
         iloc = this%iloc
         jn = this%jn
         !if (.not. (associated(DisDiff, this%Diff))) DisDiff => this%Diff
+        if(associated(DisOPNorm)) DisOPNorm=>null()
         DisOPNorm => this%DisOPNorm
+        if(associated(Coef_dx)) Coef_dx=>null()
         Coef_dx => this%Coef
         Coef_dx1=-Coef_dx(1)
 

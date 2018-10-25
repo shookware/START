@@ -568,6 +568,9 @@ module mod_lpse_eqn
         integer, intent(out) :: times
 
         times=0
+        AlphaOld=0.0d0
+        AlphaNew=0.0d0
+        AlphaFront=0.0d0
 
         !call This%Dis%Get(this%iloc-1, DisNormFront)
           !DisNormFront=this%DisNormFront
@@ -1714,10 +1717,11 @@ module mod_lpse_eqn
         integer :: j, l
         integer, parameter :: XI1 = 1, ETA1 = 2, ETA2 = 3
 
+        iloc=0; jn=0
         iloc = this%iloc
         jn = this%jn
         !if(.not. (associated(DisDiff, this%Diff))) DisDiff => this%Diff
-        if(associated(DisOPNorm)) DisOPNorm=>null()
+        !DisOPNorm=>null()
         DisOPNorm => this%DisOPNorm
         if(associated(Coef_dx)) Coef_dx=>null()
         Coef_dx => this%Coef

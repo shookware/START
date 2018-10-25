@@ -209,6 +209,9 @@ module mod_sparse_matrix
           allocate(this%JA(nnz))
         endif
 
+        this%an=0.0d0
+        this%ia=0; this%ja=0
+
     end subroutine create_csr_mat
 
     subroutine Create_bsr_mat(this, nrow, nnz, blocksize)

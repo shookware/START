@@ -31,7 +31,7 @@ module mod_parameter
     implicit none
 
     real(R_P), parameter :: EPS=1.0d-8                !< 参差
-    real(R_P) :: EPS_REL=1.0d-6
+    real(R_P), parameter :: EPS_REL=1.0d-6
     complex(R_P), parameter :: CPLI=(0.0d0, 1.0d0)    !< 复数i
     real(R_P) :: Re                                 !< 雷诺数
     real(R_P) :: Te                                  !< 无穷远来流温度

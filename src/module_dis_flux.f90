@@ -548,34 +548,6 @@ module mod_dis_flux
 
     end subroutine solve_matrix
 
-    subroutine solve_matrix_ill(n, a, rhs, x)
-
-      implicit none
-      integer, intent(in) :: n
-      complex(R_P), intent(in) :: a(n, n), rhs(n)
-      complex(R_P), intent(out) :: x(n)
-      complex(R_P) :: mf(5,5)
-      integer :: ipiv(5), info
-      complex(R_P) :: dx(5), drhs(5)
-      real(R_P) :: eps
-
-      mf=a
-      call zgetrf(n, n, mf, 5, ipiv, info)
-      x=rhs
-      call zgetrs('N', 5, 1, mf, 5, ipiv, x, 5, info)
-
-      eps=1.0d0
-      do while (eps>=1.0d-16)
-        drhs=rhs-matmul(a, x)
-        dx=drhs
-        call zgetrs('N', 5, 1, mf, 5, ipiv, dx, 5, info)
-        x=x+dx
-        print*, maxval(abs(dx)), dx(maxloc(abs(dx)))
-        eps=maxval(abs(dx)/(1.0d0+abs(x)))
-        print*, "eps=", eps
-      enddo
-
-    end subroutine solve_matrix_ill
 
     !> 通量相加
     type(dis_flux_type) function add_type(obj1, obj2)
@@ -708,9 +680,9 @@ module mod_dis_flux
 !
 !        implicit none
 !        integer, intent(in) :: n
-!        complex*16, intent(in) :: a(n,n),b(n)
+!        complex(R_P), intent(in) :: a(n,n),b(n)
 !        integer :: lda,ldb,ipiv(n),info
-!        complex*16 ::ra(n,n), x(n)
+!        complex(R_P) ::ra(n,n), x(n)
 !
 !          ra=a
 !          lda=n

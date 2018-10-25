@@ -36,6 +36,7 @@ module mod_npse
     use mod_lst_eqn_IR, only: lst_eqn_IR_type
     use mod_solver
     use penf, only: R_P
+    use stringifor
 
     use mod_cfgio_adapter, only: fn_surf=>prefix
 
@@ -90,7 +91,7 @@ module mod_npse
         integer :: m, n
 
         this%m_dim=m_dim-1  !< 时间方向8个离散点则对应0:7
-        this%n_dim=n_dim-1  !< 空间法向8个离散点则对应-7：7
+        this%n_dim=n_dim-1  !< 空间展向8个离散点则对应-7：7
 
         write(*, *)'The dimension in time and spanwise direction is:'
         write(*, *)'0:', this%m_dim, ',   -',this%n_dim,':', this%n_dim
@@ -456,7 +457,7 @@ print*, 'lst solver end'
           write(*, '(I5, 4X, I5, 3(3X, E16.8), 3X,"(",E16.8,",",2X,E16.8,")")') &
           &     m_index(i), n_index(i), amp(i), real(wavenum_pse%getOmega()), &
           &     real(wavenum_pse%getBeta()), wavenum_pse%getAlpha()
-          if(i==1) this%isWithAlpha(m_index(i), n_index(i)) =.True.
+          if(i<=2) this%isWithAlpha(m_index(i), n_index(i)) =.True.
 
         enddo
 
@@ -551,7 +552,7 @@ print*, 'lst solver end'
           Amp_local(5)=abs(T)
           Amp_local(6)=0.0d0
           Amp_local(7)=abs(w)
-          E_local0=rho0*(u*conjg(u)+v*conjg(v))+w*conjg(w)
+          E_local0=real(rho0*(u*conjg(u)+v*conjg(v))+w*conjg(w), kind=R_P)
           Amp_pse(:, i)=0.0d0
 
           do j=2, jn
@@ -562,7 +563,7 @@ print*, 'lst solver end'
             Amp_local(3)=abs(u)
             Amp_local(4)=abs(v)
             Amp_local(5)=abs(T)
-            E_local1=rho0*(u*conjg(u)+v*conjg(v))+w*conjg(w)
+            E_local1=real(rho0*(u*conjg(u)+v*conjg(v))+w*conjg(w), kind=R_P)
             Amp_local(6)=Amp_local(6)+0.5d0*(E_local1+E_local0)*(yy(j)-yy(j-1))
             E_local0=E_local1
             Amp_local(7)=abs(w)

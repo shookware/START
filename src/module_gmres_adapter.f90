@@ -78,8 +78,8 @@ module mod_gmres_adapter
             import
             Implicit None
             class(solver_type), intent(in) :: content
-            real*8, intent(in) :: x(:)
-            real*8, intent(out) :: rhs(:)
+            real(8), intent(in) :: x(:)
+            real(8), intent(out) :: rhs(:)
 
         end subroutine proc_real
 
@@ -91,8 +91,8 @@ module mod_gmres_adapter
 
         implicit none
         class(gmres_adapter_type),intent(inout) :: this
-        complex*16, intent(in) :: SolutionGuess(:)
-        complex*16, intent(in) :: RHS(:)
+        complex(R_P), intent(in) :: SolutionGuess(:)
+        complex(R_P), intent(in) :: RHS(:)
 
         call this%solver%SetGuess(SolutionGuess)
         call this%solver%SetRHS(RHS)

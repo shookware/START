@@ -54,13 +54,13 @@ module mod_context
     type, public :: context_type
 
         private
-        type(grid2d_type)         , pointer     :: grid                          !< 原网格\private
-        type(grid2d_type)         , pointer     :: gridFixBody                   !< 计算网格(贴体网格)\private
-        type(BaseFlow2D_type)     , pointer     :: BaseFlow                      !< 基本流\private
+        type(grid2d_type)         , pointer     :: grid=>null()                          !< 原网格\private
+        type(grid2d_type)         , pointer     :: gridFixBody=>null()                   !< 计算网格(贴体网格)\private
+        type(BaseFlow2D_type)     , pointer     :: BaseFlow=>null()                      !< 基本流\private
 !        type(BaseFlow2D_Diff_type), pointer     :: dBaseFlow                     !< 基本流导数\private
-        type(Difference_2D_type)  , pointer     :: diff_BF                       !<基本流差分基函数\private
-        type(Difference_2D_type)  , pointer     :: diff_Dis                      !<扰动差分基函数\private
-        type(Curvature_2d_type)   , pointer     :: curvature                     !<表面曲率\private
+        type(Difference_2D_type)  , pointer     :: diff_BF =>null()                      !<基本流差分基函数\private
+        type(Difference_2D_type)  , pointer     :: diff_Dis =>null()                     !<扰动差分基函数\private
+        type(Curvature_2d_type)   , pointer     :: curvature =>null()                    !<表面曲率\private
         type(Dis_type)            , allocatable :: dis                           !<扰动\private
         type(Dis_type)            , allocatable :: adjointDis                    !<伴随扰动\private
         class(*)                  , allocatable :: solver                        !<解算器类型\private
@@ -151,8 +151,8 @@ module mod_context
         !! Create container
         allocate(this%Grid)
         call this%Grid%CreateFromPLOT3D(gridfile)
-        if(.not. associated(this%GridFixBody)) &
-        &   this%GridFixBody => this%Grid%TransBodyFix()
+        if(associated(this%GridFixBody)) this%gridFixBody=>null()
+        this%GridFixBody => this%Grid%TransBodyFix()
         allocate(this%Diff_BF, this%Diff_Dis)
         call this%Diff_BF%InitDiff(this%GridFixBody, 4, 4, DiffBF)
         call this%Diff_Dis%InitDiff(this%GridFixBody, 1, 4, DiffDis)
@@ -257,6 +257,7 @@ module mod_context
         class(context_type), intent(inout) :: this
 
         allocate(this%dis)
+        print*, 'LST is adopted!'
         call this%Dis%Create(this%Grid)
         allocate(lst_type :: this%solver)
         select type (LST => this%solver)

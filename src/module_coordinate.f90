@@ -249,7 +249,7 @@ module mod_curvature_2d
         if(.not. allocated(this%curvature_2d)) &
         &   allocate(this%curvature_2d(in))
         do i=1, in
-            call this%curvature_2d%Set(drxz(i, 1), drxz(i, 2))
+            call this%curvature_2d(i)%Set(drxz(i, 1), drxz(i, 2))
         enddo
         deallocate(drxz)
 
